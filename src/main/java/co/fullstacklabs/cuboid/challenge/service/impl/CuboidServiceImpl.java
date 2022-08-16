@@ -52,6 +52,31 @@ public class CuboidServiceImpl implements CuboidService {
         cuboid = repository.save(cuboid);
         return mapper.map(cuboid, CuboidDTO.class);
     }
+    
+    @Override
+    @Transactional
+    public CuboidDTO update(CuboidDTO cuboidDTO) {
+        Bag bag = getBagById(cuboidDTO.getBagId());
+        Cuboid cuboid = mapper.map(cuboidDTO, Cuboid.class);
+        cuboid.setBag(bag);
+        cuboid = repository.save(cuboid);
+        return mapper.map(cuboid, CuboidDTO.class);
+    }
+    
+    @Override
+    @Transactional
+    public String delete(CuboidDTO cuboidDTO) {
+        try {
+        	repository.deleteById(cuboidDTO.getId());
+			return "OK";
+		} catch (Exception e) {
+			// TODO: handle exception
+			return "Error";
+		}
+        
+    }
+
+
 
     /**
      * List all cuboids
